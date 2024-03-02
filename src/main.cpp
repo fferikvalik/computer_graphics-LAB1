@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
         SDL_RenderClear(gRenderer);
 
         //draw(loadedSurface);
-        drawCardioid(loadedSurface, 10);
+        drawCardioid(loadedSurface, 100);
 
         SDL_UpdateTexture(gTexture, NULL, loadedSurface->pixels, loadedSurface->pitch);
         SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
