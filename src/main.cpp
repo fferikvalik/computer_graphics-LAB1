@@ -58,7 +58,10 @@ int main(int argc, char *argv[])
       0x0000FF00,// G
       0x000000FF,// B
       0x00000000);// alpha
-
+    float a = 74;
+    float x_move = 0;
+    float y_move = 0;
+    double alpha = 0;
     gTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 
     if (NULL == gTexture) {
@@ -74,11 +77,45 @@ int main(int argc, char *argv[])
           }
           if (SDL_KEYDOWN == e.type) {
             switch (e.key.keysym.scancode) {
+              case SDL_SCANCODE_Q:
+              alpha -= 5;
+              SDL_FillRect(loadedSurface, NULL, 0x00FFFFFF);
+              break;
+            case SDL_SCANCODE_E:
+              alpha += 5;
+              SDL_FillRect(loadedSurface, NULL, 0x00FFFFFF);
+              break;
             case SDL_SCANCODE_KP_PLUS:
               printf("SDL_SCANCODE_KP_PLUS have been presssed\n");
+              a += 3;
               break;
             case SDL_SCANCODE_KP_MINUS:
               printf("SDL_SCANCODE_KP_MINUS have been presssed\n");
+              a -= 3;
+              break;
+           case SDL_SCANCODE_RIGHT:
+              printf("SDL_SCANCODE_RIGHT have been pressed\n");
+              if (x_move + 10 < 170){
+                x_move += 10;
+              }
+              break;
+            case SDL_SCANCODE_LEFT:
+              printf("SDL_SCANCODE_LEFT have been pressed\n");
+              if (x_move - 10 > -310){
+                x_move -= 10;
+              }
+              break;
+            case SDL_SCANCODE_UP:
+              printf("SDL_SCANCODE_UP have been pressed\n");
+              if (y_move - 10 > -230){
+                y_move -= 10;
+              }
+              break;
+            case SDL_SCANCODE_DOWN:
+              printf("SDL_SCANCODE_DOWN have been pressed\n");
+              if (y_move + 10 < 230){
+                y_move += 10;
+              }
               break;
             case SDL_SCANCODE_ESCAPE:
               quit = true;
@@ -90,8 +127,7 @@ int main(int argc, char *argv[])
         }
         SDL_RenderClear(gRenderer);
 
-        //draw(loadedSurface);
-        drawCardioid(loadedSurface, 100.0f);
+        draw(loadedSurface, a, x_move, y_move, alpha * 3.14 / 180);
 
         SDL_UpdateTexture(gTexture, NULL, loadedSurface->pixels, loadedSurface->pitch);
         SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
