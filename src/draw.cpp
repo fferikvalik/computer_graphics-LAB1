@@ -29,10 +29,20 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
                 case SDL_SCANCODE_Q:
                     alpha -= 5;
                     SDL_FillRect(loadedSurface, NULL, 0x00FFFFFF);
+                    // Обновление границ перемещения после поворота
+                    x_move = std::min(x_move, 170.0f);
+                    x_move = std::max(x_move, -310.0f);
+                    y_move = std::min(y_move, 230.0f);
+                    y_move = std::max(y_move, -230.0f);
                     break;
                 case SDL_SCANCODE_E:
                     alpha += 5;
                     SDL_FillRect(loadedSurface, NULL, 0x00FFFFFF);
+                    // Обновление границ перемещения после поворота
+                    x_move = std::min(x_move, 170.0f);
+                    x_move = std::max(x_move, -310.0f);
+                    y_move = std::min(y_move, 230.0f);
+                    y_move = std::max(y_move, -230.0f);
                     break;
                 case SDL_SCANCODE_KP_PLUS:
                     printf("SDL_SCANCODE_KP_PLUS have been presssed\n");
@@ -75,6 +85,7 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
     }
     return true;
 }
+
 
 /**
  * Renders the graphics on the screen.
@@ -201,6 +212,14 @@ void draw_axes(SDL_Surface *s)
     put_pixel32(s, SCREEN_WIDTH/2, j, RGB32(255, 255, 255)); // Set pixel at (SCREEN_WIDTH/2, j) to white
   }
 }
+void draw_grid(SDL_Surface *s, int step)
+{
+  for (int x = 0; x < SCREEN_WIDTH; x += step) { // Loop through each x-coordinate with the given step
+    for (int y = 0; y < SCREEN_HEIGHT; y += step) { // Loop through each y-coordinate with the given step
+      put_pixel32(s, x, y, RGB32(255, 255, 255)); // Set pixel at (x, y) to white
+    }
+  }
+}
 
 void draw_main_function(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
@@ -252,24 +271,30 @@ void draw_function_points(SDL_Surface *s, float a, float x_move, float y_move, d
   for (float i = 0; i < 2 * M_PI; i += 0.1) { // Loop through each angle from 0 to 2*pi
     float x = 2.5 * cos(i) + (3*a)/4; // Calculate x-coordinate based on angle and parameter a
     float y = 2.5 * sin(i) + sqrt(3)*(3*a)/4; // Calculate y-coordinate based on angle and parameter a
+
+    // Rotate the cardioid
     float rotate_x = x * cos(alpha) - y * sin(alpha); // Rotate x-coordinate using alpha
     float rotate_y = x * sin(alpha) + y * cos(alpha); // Rotate y-coordinate using alpha
-    x = rotate_x; // Update x-coordinate with rotated value
-    y = rotate_y; // Update y-coordinate with rotated value
-    x += x_move; // Translate x-coordinate by x_move
-    y -= y_move; // Translate y-coordinate by y_move
+
+    // Translate the cardioid after rotating
+    x = rotate_x + x_move;
+    y = rotate_y - y_move;
+
     put_pixel32(s, x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y, RGB32(0, 255, 0)); // Set pixel at (x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y) to RGB(0, 255, 0)
   }
 
   for (float i = 0; i < 2 * M_PI; i += 0.1) { // Loop through each angle from 0 to 2*pi
     float x = 2.5 * cos(i) + (3*a)/4; // Calculate x-coordinate based on angle and parameter a
     float y = 2.5 * sin(i) + sqrt(3)*(-1)*(3*a)/4; // Calculate y-coordinate based on angle and parameter a
+
+    // Rotate the cardioid
     float rotate_x = x * cos(alpha) - y * sin(alpha); // Rotate x-coordinate using alpha
     float rotate_y = x * sin(alpha) + y * cos(alpha); // Rotate y-coordinate using alpha
-    x = rotate_x; // Update x-coordinate with rotated value
-    y = rotate_y; // Update y-coordinate with rotated value
-    x += x_move; // Translate x-coordinate by x_move
-    y -= y_move; // Translate y-coordinate by y_move
+
+    // Translate the cardioid after rotating
+    x = rotate_x + x_move;
+    y = rotate_y - y_move;
+
     put_pixel32(s, x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y, RGB32(0, 255, 0)); // Set pixel at (x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y) to RGB(0, 255, 0)
   }
 }
@@ -278,6 +303,7 @@ void draw(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
   clear_surface(s); // Clear the surface by setting all pixels to black
   draw_axes(s);
   draw_main_function(s, a, x_move, y_move, alpha);
+  draw_grid(s, 20);
   draw_invisible_circle(s, a, x_move, y_move, alpha);
   draw_circle_points(s, a, x_move, y_move, alpha);
   draw_function_points(s, a, x_move, y_move, alpha);
