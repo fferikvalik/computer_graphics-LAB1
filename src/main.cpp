@@ -1,5 +1,12 @@
 #include "draw.h"
 
+/**
+ * @brief The main function of the program.
+ *
+ * @param argc The number of command-line arguments.
+ * @param argv An array of command-line arguments.
+ * @return int The exit status of the program.
+ */
 int main(int argc, char* argv[]) {
     if (!init()) {
         printf("Failed to initialize!\n");
@@ -7,10 +14,12 @@ int main(int argc, char* argv[]) {
     }
 
     loadedSurface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32,
-                                         0x00FF0000,// R
-                                         0x0000FF00,// G
-                                         0x000000FF,// B
-                                         0x00000000);// alpha
+
+    0x00FF0000,// R
+    0x0000FF00,// G
+    0x000000FF,// B
+    0x00000000);// alpha
+
     float a = 74;
     float x_move = 0;
     float y_move = 0;

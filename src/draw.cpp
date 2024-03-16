@@ -9,6 +9,15 @@
 
 #define RGB32(r, g, b) static_cast<uint32_t>((((static_cast<uint32_t>(r) << 8) | g) << 8) | b)
 
+/**
+ * Handles SDL events and updates the values of the parameters.
+ *
+ * @param a The value of 'a' to be updated.
+ * @param x_move The value of 'x_move' to be updated.
+ * @param y_move The value of 'y_move' to be updated.
+ * @param alpha The value of 'alpha' to be updated.
+ * @return Returns true if the event handling is successful, false if the user quits the application.
+ */
 bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
     SDL_Event e;
     while (SDL_PollEvent(&e) != 0) {
@@ -67,6 +76,15 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
     return true;
 }
 
+/**
+ * Renders the graphics on the screen.
+ *
+ * @param a The value of 'a' used in the draw function.
+ * @param x_move The amount of horizontal movement.
+ * @param y_move The amount of vertical movement.
+ * @param alpha The angle in degrees.
+ */
+
 void render(float a, float x_move, float y_move, double alpha) {
     SDL_RenderClear(gRenderer);
     draw(loadedSurface, a, x_move, y_move, alpha * 3.14 / 180);
@@ -74,11 +92,32 @@ void render(float a, float x_move, float y_move, double alpha) {
     SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
     SDL_RenderPresent(gRenderer);
 }
-SDL_Window *gWindow = NULL;
-SDL_Renderer *gRenderer = NULL;
-SDL_Texture *gTexture = NULL;
-SDL_Surface *loadedSurface = NULL;
 
+
+
+    SDL_Window *gWindow = NULL;
+    SDL_Renderer *gRenderer = NULL;
+    SDL_Texture *gTexture = NULL;
+    /**
+     * @brief Represents a 2D image surface that can be used for rendering in SDL.
+     *
+     * The `SDL_Surface` structure represents a 2D image surface that can be used for rendering in SDL.
+     * It contains pixel data and various attributes like width, height, and pixel format.
+     * This structure is used by many SDL functions to perform operations on surfaces, such as loading and saving images,
+     * blitting surfaces onto other surfaces, and more.
+     *
+     * @note This structure is an opaque data type, meaning that its internal implementation is hidden from the user.
+     *       Users should only interact with `SDL_Surface` pointers and use the provided functions to manipulate them.
+     */
+    SDL_Surface *loadedSurface = NULL;
+
+
+
+/**
+ * Initializes the SDL library and creates a window and renderer.
+ *
+ * @return true if initialization is successful, false otherwise.
+ */
 bool init()
 {
   bool success = true;
@@ -103,6 +142,12 @@ bool init()
   return success;
 }
 
+/**
+ * @brief Closes the SDL window and cleans up resources.
+ *
+ * This function destroys the SDL texture, renderer, and window, and then quits the SDL subsystem.
+ * After calling this function, the texture, renderer, and window pointers are set to NULL.
+ */
 void close()
 {
   SDL_DestroyTexture(gTexture);
