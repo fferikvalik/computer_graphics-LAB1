@@ -1,16 +1,28 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/nick-petrovsky/labexample?color=yellow)
+# Game Rendering Project
 
-## Описание
-Это тестовый проект на основе общего шаблона. Новый файл `draw.cpp` был добавлен в проект. В этом файле реализована функция `draw()`, которая отвечает за отрисовку объектов игры на экране. Она принимает поверхность для рисования, текстуру, координаты x и y для размещения, а также угол для поворота текстуры.
+This project is about rendering game objects on the screen using SDL. The main files involved in this project are `main.cpp`, `draw.h`, and `draw.cpp`.
 
-Вот краткий обзор параметров:
+## main.cpp
 
-- `loadedSurface`: Это поверхность, на которой мы будем рисовать.
-- `a`: Это текстура, которую мы будем рисовать.
-- `x_move` и `y_move`: Это координаты x и y, где мы разместим текстуру на поверхности.
-- `alpha`: Это угол, на который мы повернем текстуру. Он измеряется в градусах, и мы преобразуем его в радианы в функции.
+The `main.cpp` file is the entry point of our program. It initializes SDL, creates a window and a renderer, and then enters the main loop where it handles keyboard events and calls the `draw` function.
 
-Пожалуйста, обратитесь к исходному коду в `draw.cpp` для более подробной информации.
+## draw.h
 
-Результатом выполнения этой функции является следующее окно:
+The `draw.h` file contains the declaration of the `draw` function. This function is responsible for drawing the game objects on the screen. It takes a surface for drawing, a texture, x and y coordinates for placement, and an angle for rotating the texture.
+
+## draw.cpp
+
+The `draw.cpp` file contains the implementation of the `draw` function. It uses the SDL library to draw the texture on the given surface at the specified coordinates and rotation.
+
+Here's a brief overview of the parameters:
+
+- `loadedSurface`: This is the surface we will be drawing on.
+- `a`: This is the texture we will be drawing.
+- `x_move` and `y_move`: These are the x and y coordinates where we will place the texture on the surface.
+- `alpha`: This is the angle we will rotate the texture by. It is measured in degrees, and we convert it to radians in the function.
+
+Please refer to the source code in `draw.cpp` for more detailed information.
+
+The result of running this function is a window displaying the game objects.
 

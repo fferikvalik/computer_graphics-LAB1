@@ -5,11 +5,8 @@
 #include <string>
 #include <cassert>
 
-
 bool init();
-
 void close();
-
 
 int main(int argc, char *argv[])
 {

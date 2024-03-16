@@ -161,7 +161,6 @@ void draw_function_points(SDL_Surface *s, float a, float x_move, float y_move, d
 }
 void draw(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
-
   clear_surface(s); // Clear the surface by setting all pixels to black
   draw_axes(s);
   draw_main_function(s, a, x_move, y_move, alpha);
