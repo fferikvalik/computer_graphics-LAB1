@@ -86,7 +86,6 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
     return true;
 }
 
-
 /**
  * Renders the graphics on the screen.
  *
@@ -104,8 +103,6 @@ void render(float a, float x_move, float y_move, double alpha) {
     SDL_RenderPresent(gRenderer);
 }
 
-
-
     SDL_Window *gWindow = NULL;
     SDL_Renderer *gRenderer = NULL;
     SDL_Texture *gTexture = NULL;
@@ -121,8 +118,6 @@ void render(float a, float x_move, float y_move, double alpha) {
      *       Users should only interact with `SDL_Surface` pointers and use the provided functions to manipulate them.
      */
     SDL_Surface *loadedSurface = NULL;
-
-
 
 /**
  * Initializes the SDL library and creates a window and renderer.
@@ -298,6 +293,7 @@ void draw_function_points(SDL_Surface *s, float a, float x_move, float y_move, d
     put_pixel32(s, x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y, RGB32(0, 255, 0)); // Set pixel at (x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y) to RGB(0, 255, 0)
   }
 }
+
 void draw(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
   clear_surface(s); // Clear the surface by setting all pixels to black
@@ -308,4 +304,3 @@ void draw(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
   draw_circle_points(s, a, x_move, y_move, alpha);
   draw_function_points(s, a, x_move, y_move, alpha);
 }
-
