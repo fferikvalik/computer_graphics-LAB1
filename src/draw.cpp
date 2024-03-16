@@ -1,10 +1,79 @@
-﻿#include "draw.h"
+﻿/**
+ * @file draw.cpp
+ * @brief Implementation file for drawing functions.
+ */
+#include "draw.h"
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
 #define RGB32(r, g, b) static_cast<uint32_t>((((static_cast<uint32_t>(r) << 8) | g) << 8) | b)
 
+bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
+    SDL_Event e;
+    while (SDL_PollEvent(&e) != 0) {
+        if (SDL_QUIT == e.type) {
+            return false;
+        }
+        if (SDL_KEYDOWN == e.type) {
+            switch (e.key.keysym.scancode) {
+                case SDL_SCANCODE_Q:
+                    alpha -= 5;
+                    SDL_FillRect(loadedSurface, NULL, 0x00FFFFFF);
+                    break;
+                case SDL_SCANCODE_E:
+                    alpha += 5;
+                    SDL_FillRect(loadedSurface, NULL, 0x00FFFFFF);
+                    break;
+                case SDL_SCANCODE_KP_PLUS:
+                    printf("SDL_SCANCODE_KP_PLUS have been presssed\n");
+                    a += 3;
+                    break;
+                case SDL_SCANCODE_KP_MINUS:
+                    printf("SDL_SCANCODE_KP_MINUS have been presssed\n");
+                    a -= 3;
+                    break;
+                case SDL_SCANCODE_D:
+                    printf("SDL_SCANCODE_D have been pressed\n");
+                    if (x_move + 10 < 170) {
+                        x_move += 10;
+                    }
+                    break;
+                case SDL_SCANCODE_A:
+                    printf("SDL_SCANCODE_A have been pressed\n");
+                    if (x_move - 10 > -310) {
+                        x_move -= 10;
+                    }
+                    break;
+                case SDL_SCANCODE_W:
+                    printf("SDL_SCANCODE_W have been pressed\n");
+                    if (y_move - 10 > -230) {
+                        y_move -= 10;
+                    }
+                    break;
+                case SDL_SCANCODE_S:
+                    printf("SDL_SCANCODE_S have been pressed\n");
+                    if (y_move + 10 < 230) {
+                        y_move += 10;
+                    }
+                    break;
+                case SDL_SCANCODE_ESCAPE:
+                    return false;
+                default:
+                    break;
+            }
+        }
+    }
+    return true;
+}
+
+void render(float a, float x_move, float y_move, double alpha) {
+    SDL_RenderClear(gRenderer);
+    draw(loadedSurface, a, x_move, y_move, alpha * 3.14 / 180);
+    SDL_UpdateTexture(gTexture, NULL, loadedSurface->pixels, loadedSurface->pitch);
+    SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
+    SDL_RenderPresent(gRenderer);
+}
 SDL_Window *gWindow = NULL;
 SDL_Renderer *gRenderer = NULL;
 SDL_Texture *gTexture = NULL;
