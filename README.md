@@ -32,3 +32,14 @@ Here's a brief overview of the parameters:
 Please refer to the source code in `draw.cpp` for more detailed information.
 
 The result of running this function is a window displaying the game objects.
+## Program Description
+
+The program allows for the movement of a cardioid shape on the screen using the WASD and QE keys. This functionality is implemented through the `handleEvents` function.
+
+## Screenshots
+
+### Initial Position of the Cardioid
+![Initial Position](path/to/initial_screenshot.png)
+
+### Modified Position of the Cardioid
+![Modified Position](path/to/modified_screenshot.png)
