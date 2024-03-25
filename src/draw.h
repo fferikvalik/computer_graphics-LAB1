@@ -98,8 +98,41 @@ int my_put_pixel(int x, int y, double alpha);
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 640;
 
+/**
+ * @brief The main window used by the application.
+ *
+ * This variable represents the main window used by the application. It is of type `SDL_Window*`.
+ * The window is created and managed by the SDL library.
+ */
 extern SDL_Window *gWindow;
+/**
+ * @brief The rendering context used by SDL.
+ *
+ * The `SDL_Renderer` is responsible for rendering graphics to a window or texture. It provides functions for drawing basic shapes, rendering images, and applying transformations. The renderer is associated with a specific window or texture and is used to update the screen or texture with the rendered content.
+ *
+ * @see SDL_CreateRenderer
+ * @see SDL_DestroyRenderer
+ * @see SDL_RenderPresent
+ */
 extern SDL_Renderer *gRenderer;
+/**
+ * @brief The texture used for rendering.
+ *
+ * This variable represents the SDL texture used for rendering graphics on the screen.
+ * It is an external variable, meaning it is defined in another file and can be accessed
+ * from this file using the `extern` keyword.
+ */
 extern SDL_Texture *gTexture;
+/**
+ * @brief Represents a 2D image surface that can be used for rendering.
+ *
+ * The `SDL_Surface` structure represents a 2D image surface that can be used for rendering
+ * with the SDL library. It contains pixel data and information about the format and size
+ * of the surface.
+ *
+ * @see SDL_CreateRGBSurface()
+ * @see SDL_LoadBMP()
+ * @see SDL_BlitSurface()
+ */
 extern SDL_Surface *loadedSurface;
 
