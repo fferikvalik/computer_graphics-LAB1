@@ -39,7 +39,8 @@ The program allows for the movement of a cardioid shape on the screen using the 
 ## Screenshots
 
 ### Initial Position of the Cardioid
-![Initial Position](path/to/initial_screenshot.png)
+<img width="752" alt="Снимок экрана 2024-03-25 в 10 15 42" src="https://github.com/fferikvalik/computer_graphics-LAB1/assets/81646006/fef86cc4-1e4d-4143-9a8a-aa604cd2a081">
+
 
 ### Modified Position of the Cardioid
-![Modified Position](path/to/modified_screenshot.png)
+<img width="752" alt="Снимок экрана 2024-03-25 в 10 15 58" src="https://github.com/fferikvalik/computer_graphics-LAB1/assets/81646006/438b4bd2-30da-4204-8d80-6f70a2f44a8b">
