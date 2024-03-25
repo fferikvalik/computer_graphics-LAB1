@@ -72,6 +72,9 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
         if (SDL_QUIT == e.type) {
             return false;
         }
+        //if (SDL_MOUSEBUTTONDOWN == e.type){
+            //e.button.x;
+        //}
         if (SDL_KEYDOWN == e.type) {
             switch (e.key.keysym.scancode) {
                 case SDL_SCANCODE_Q:
@@ -264,6 +267,12 @@ void draw_axes(SDL_Surface *s)
   }
 }
 
+/**
+ * Draws a grid on the given SDL surface.
+ *
+ * @param s The SDL surface to draw the grid on.
+ * @param step The step size between each grid line.
+ */
 void draw_grid(SDL_Surface *s, int step)
 {
   for (int x = 0; x < SCREEN_WIDTH; x += step) { // Loop through each x-coordinate with the given step

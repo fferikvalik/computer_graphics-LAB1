@@ -1,4 +1,9 @@
 #include "draw.h"
+// TODO: Implement frame rate limiting for animation rendering.
+// TODO: Implement dynamic window title update with current coordinates of the cardioid center and current FPS count.
+// TODO: Implement rotation of the cardioid around a user-selected point, with a step size of 10 pixels per mouse click.
+// TODO: Implement the ability to set the rotation point by clicking on a specific part of the screen.
+// TODO: Implement the ability to set the radius within the program itself.
 
 /**
  * @brief The main function of the program.
