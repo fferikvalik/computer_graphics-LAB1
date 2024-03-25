@@ -1,7 +1,14 @@
-![GitHub last commit](https://img.shields.io/github/last-commit/nick-petrovsky/labexample?color=yellow)
+![GitHub last commit](https://img.shields.io/github.com/fferikvalik/computer_graphics-LAB1?color=yellow)
 # Game Rendering Project
 
 This project is about rendering game objects on the screen using SDL. The main files involved in this project are `main.cpp`, `draw.h`, and `draw.cpp`.
+
+## Features
+
+- **Well-commented code**: All functions in the codebase are thoroughly commented. This makes the code easy to understand and maintain.
+- **Flexible game object rendering**: The `draw` function can draw any texture at any position and rotation on the screen. This allows for a high degree of flexibility in rendering game objects.
+- **Keyboard event handling**: The program includes comprehensive keyboard event handling, allowing for interactive control of game objects.
+- **Use of SDL library**: The project makes extensive use of the SDL library for graphics rendering, making it a great example for those looking to learn about game development with SDL.
 
 ## main.cpp
 
@@ -25,4 +32,3 @@ Here's a brief overview of the parameters:
 Please refer to the source code in `draw.cpp` for more detailed information.
 
 The result of running this function is a window displaying the game objects.
-
