@@ -165,6 +165,14 @@ void close()
   SDL_Quit();
 }
 
+/**
+ * Puts a pixel of the specified color at the given coordinates on the SDL surface.
+ *
+ * @param surface The SDL surface on which to put the pixel.
+ * @param x The x-coordinate of the pixel.
+ * @param y The y-coordinate of the pixel.
+ * @param pixel The color of the pixel in the format of Uint32.
+ */
 void put_pixel32(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
   assert(NULL != surface); // Check if surface is not NULL
@@ -174,12 +182,23 @@ void put_pixel32(SDL_Surface *surface, int x, int y, Uint32 pixel)
   }
 }
 
+/**
+ * Clears the given SDL_Surface by setting all pixels to black.
+ *
+ * @param s The SDL_Surface to be cleared.
+ */
 void clear_surface(SDL_Surface * s) {
   for (int x = 1; x < SCREEN_WIDTH; x++) // Loop through each x-coordinate
     for(int y = 1; y < SCREEN_HEIGHT; y++) // Loop through each y-coordinate
       put_pixel32(s,x,y,RGB32(0,0,0)); // Set pixel at (x, y) to black
 }
 
+/**
+ * @brief Unsigned 32-bit integer type.
+ *
+ * This type represents an unsigned 32-bit integer value.
+ * It is commonly used to store pixel values in graphics programming.
+ */
 Uint32 get_pixel32(SDL_Surface *surface, int x, int y)
 {
   assert(NULL != surface); // Check if surface is not NULL
@@ -190,6 +209,14 @@ Uint32 get_pixel32(SDL_Surface *surface, int x, int y)
   return pixels[(y * surface->w) + x]; // Return the pixel value at (x, y)
 }
 
+/**
+ * Rotates the given coordinates (x, y) using the specified angle alpha.
+ *
+ * @param x The x-coordinate of the point to be rotated.
+ * @param y The y-coordinate of the point to be rotated.
+ * @param alpha The angle (in radians) by which the point should be rotated.
+ * @return The rotated coordinates (x, y).
+ */
 int my_put_pixel(int x, int y, double alpha)
 {
   x = (int)(x * cos(alpha) - y * sin(alpha)); // Rotate x-coordinate using alpha
@@ -197,6 +224,11 @@ int my_put_pixel(int x, int y, double alpha)
   return x, y; // Return the rotated coordinates
 }
 
+/**
+ * Draws the axes on the given SDL surface.
+ *
+ * @param s The SDL surface to draw on.
+ */
 void draw_axes(SDL_Surface *s)
 {
   for (int i = 0; i < SCREEN_WIDTH; i++){ // Loop through each x-coordinate
@@ -207,6 +239,7 @@ void draw_axes(SDL_Surface *s)
     put_pixel32(s, SCREEN_WIDTH/2, j, RGB32(255, 255, 255)); // Set pixel at (SCREEN_WIDTH/2, j) to white
   }
 }
+
 void draw_grid(SDL_Surface *s, int step)
 {
   for (int x = 0; x < SCREEN_WIDTH; x += step) { // Loop through each x-coordinate with the given step
@@ -216,6 +249,15 @@ void draw_grid(SDL_Surface *s, int step)
   }
 }
 
+/**
+ * Draws a shape on the given SDL surface.
+ *
+ * @param s The SDL surface to draw on.
+ * @param a The parameter used to calculate the shape's coordinates.
+ * @param x_move The amount to translate the shape along the x-axis.
+ * @param y_move The amount to translate the shape along the y-axis.
+ * @param alpha The angle (in radians) used to rotate the shape.
+ */
 void draw_main_function(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
   for (float t = 0; t < 2 * M_PI; t += 0.001) { // Loop through each angle from 0 to 2*pi
@@ -231,6 +273,15 @@ void draw_main_function(SDL_Surface *s, float a, float x_move, float y_move, dou
   }
 }
 
+/**
+ * Draws an invisible circle on the given SDL surface.
+ *
+ * @param s The SDL surface to draw on.
+ * @param a The radius of the circle.
+ * @param x_move The amount to move the circle along the x-axis.
+ * @param y_move The amount to move the circle along the y-axis.
+ * @param alpha The angle in radians to rotate the circle.
+ */
 void draw_invisible_circle(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
   for (float g = 0; g < 2 * M_PI; g += 0.1) { // Loop through each angle from 0 to 2*pi
@@ -246,6 +297,15 @@ void draw_invisible_circle(SDL_Surface *s, float a, float x_move, float y_move, 
   }
 }
 
+/**
+ * Draws a circle on the given SDL surface.
+ *
+ * @param s The SDL surface to draw on.
+ * @param a The radius of the circle.
+ * @param x_move The amount to translate the circle along the x-axis.
+ * @param y_move The amount to translate the circle along the y-axis.
+ * @param alpha The angle (in radians) to rotate the circle.
+ */
 void draw_circle_points(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
   for (float i = 0; i < 2 * M_PI; i += 0.1) { // Loop through each angle from 0 to 2*pi
@@ -261,6 +321,15 @@ void draw_circle_points(SDL_Surface *s, float a, float x_move, float y_move, dou
   }
 }
 
+/**
+ * Draws a cardioid shape on the given SDL surface.
+ *
+ * @param s The SDL surface to draw on.
+ * @param a The parameter value for the cardioid shape.
+ * @param x_move The amount to move the shape horizontally.
+ * @param y_move The amount to move the shape vertically.
+ * @param alpha The angle in radians to rotate the shape.
+ */
 void draw_function_points(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
   for (float i = 0; i < 2 * M_PI; i += 0.1) { // Loop through each angle from 0 to 2*pi
@@ -294,6 +363,19 @@ void draw_function_points(SDL_Surface *s, float a, float x_move, float y_move, d
   }
 }
 
+/**
+ * @brief Draws various elements on the given SDL surface.
+ *
+ * This function clears the surface by setting all pixels to black,
+ * draws axes, the main function, a grid, an invisible circle,
+ * circle points, and function points.
+ *
+ * @param s The SDL surface to draw on.
+ * @param a The scaling factor for the main function.
+ * @param x_move The horizontal translation for the main function.
+ * @param y_move The vertical translation for the main function.
+ * @param alpha The rotation angle for the main function.
+ */
 void draw(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
   clear_surface(s); // Clear the surface by setting all pixels to black
