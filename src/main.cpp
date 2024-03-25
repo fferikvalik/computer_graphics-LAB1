@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Переменные для отслеживания FPS
+    // Variables for tracking FPS
     int frameCount = 0;
     Uint32 startTime = SDL_GetTicks();
     Uint32 lastTime = startTime;
@@ -55,15 +55,15 @@ int main(int argc, char* argv[]) {
         if (quit)
             break;
 
-        // Обновление счетчика кадров
+        // Update frame counter
         frameCount++;
 
-        // Если прошло более одной секунды с момента последнего обновления, обновите заголовок окна
+        // If more than one second has passed since the last update, update the window title
         if (SDL_GetTicks() - lastTime > 1000) {
             std::string title = "FPS: " + std::to_string(frameCount);
             SDL_SetWindowTitle(gWindow, title.c_str());
 
-            // Сброс счетчика кадров
+            // Reset frame counter
             frameCount = 0;
             lastTime = SDL_GetTicks();
         }
