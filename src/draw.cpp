@@ -1,6 +1,15 @@
 ﻿/**
  * @file draw.cpp
  * @brief Implementation file for drawing functions.
+ *
+ * This file contains the implementation of various drawing functions used in the program.
+ * It includes functions for handling alpha changes, object movement, SDL events, rendering graphics,
+ * initializing and closing SDL, putting pixels on an SDL surface, clearing a surface, getting pixels from a surface,
+ * rotating coordinates, drawing axes, and drawing a grid.
+ */
+/**
+ * @file draw.cpp
+ * @brief Implementation file for drawing functions.
  */
 #include "draw.h"
 #include <iostream>
