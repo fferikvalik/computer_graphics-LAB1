@@ -28,6 +28,33 @@ void close();
 int my_put_pixel(int x, int y, double alpha);
 
 /**
+ * Limits the frames per second (FPS) of the program.
+ *
+ * @param frameStart The starting time of the frame.
+ * @param frameDelay The delay between frames in milliseconds.
+ */
+void limitFPS(Uint32 frameStart, int frameDelay);
+
+/**
+ * @brief Updates the frames per second (FPS) count.
+ *
+ * This function updates the frame count and calculates the elapsed time since the last update.
+ *
+ * @param frameCount A reference to the frame count variable.
+ * @param lastTime A reference to the last update time variable.
+ */
+void updateFPS(int& frameCount, Uint32& lastTime);
+
+/**
+ * @brief Initializes the graphics library.
+ *
+ * This function initializes the graphics library and returns a boolean value indicating whether the initialization was successful or not.
+ *
+ * @return true if the initialization was successful, false otherwise.
+ */
+bool initialize();
+
+/**
  * Adjusts the alpha value based on the given direction.
  *
  * This function updates the alpha value based on the given direction and adjusts the x and y movement accordingly.

@@ -72,9 +72,9 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
         if (SDL_QUIT == e.type) {
             return false;
         }
-        //if (SDL_MOUSEBUTTONDOWN == e.type){
-            //e.button.x;
-        //}
+        if (SDL_MOUSEBUTTONDOWN == e.type){
+            e.button.x;
+        }
         if (SDL_KEYDOWN == e.type) {
             switch (e.key.keysym.scancode) {
                 case SDL_SCANCODE_Q:
@@ -249,6 +249,69 @@ int my_put_pixel(int x, int y, double alpha)
   x = (int)(x * cos(alpha) - y * sin(alpha)); // Rotate x-coordinate using alpha
   y = (int)(x * sin(alpha) + y * cos(alpha)); // Rotate y-coordinate using alpha
   return x, y; // Return the rotated coordinates
+}
+
+/**
+ * @brief Initializes the graphics and sets up the rendering environment.
+ *
+ * @return true if initialization is successful, false otherwise.
+ */
+bool initialize() {
+    if (!init()) {
+        printf("Failed to initialize!\n");
+        return false;
+    }
+
+    loadedSurface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32,
+    0x00FF0000,// R
+    0x0000FF00,// G
+    0x000000FF,// B
+    0x00000000);// alpha
+
+    gTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+
+    if (nullptr == gTexture) {
+        printf("Failed to load media!\n");
+        close();
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * @brief Updates the frames per second (FPS) counter and updates the window title.
+ *
+ * @param frameCount The current frame count.
+ * @param lastTime The time of the last update.
+ */
+void updateFPS(int& frameCount, Uint32& lastTime) {
+    // Update frame counter
+    frameCount++;
+
+    // If more than one second has passed since the last update, update the window title
+    if (SDL_GetTicks() - lastTime > 1000) {
+        std::string title = "FPS: " + std::to_string(frameCount);
+        SDL_SetWindowTitle(gWindow, title.c_str());
+
+        // Reset frame counter
+        frameCount = 0;
+        lastTime = SDL_GetTicks();
+    }
+}
+
+/**
+ * Controls the frame rate by delaying execution if necessary.
+ *
+ * @param frameStart The starting time of the frame.
+ * @param frameDelay The desired delay between frames in milliseconds.
+ */
+void limitFPS(Uint32 frameStart, int frameDelay) {
+    // Control the frame rate
+    int frameTime = SDL_GetTicks() - frameStart;
+    if (frameDelay > frameTime) {
+        SDL_Delay(frameDelay - frameTime);
+    }
 }
 
 /**
