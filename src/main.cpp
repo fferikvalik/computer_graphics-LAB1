@@ -5,12 +5,20 @@
 // TODO: Implement the ability to set the rotation point by clicking on a specific part of the screen.
 // TODO: Implement the ability to set the radius within the program itself.
 
+
+#include <SDL.h>
+#include <string>
+
 /**
  * @brief The main function of the program.
  *
+ * This function is the entry point of the program. It initializes the necessary components,
+ * creates a window, and enters the main loop where events are handled and rendering is performed.
+ * The main loop continues until the user quits the program.
+ *
  * @param argc The number of command-line arguments.
  * @param argv An array of command-line arguments.
- * @return int The exit status of the program.
+ * @return An integer representing the exit status of the program.
  */
 int main(int argc, char* argv[]) {
     if (!init()) {
@@ -19,7 +27,6 @@ int main(int argc, char* argv[]) {
     }
 
     loadedSurface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32,
-
     0x00FF0000,// R
     0x0000FF00,// G
     0x000000FF,// B
@@ -37,11 +44,30 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    // Переменные для отслеживания FPS
+    int frameCount = 0;
+    Uint32 startTime = SDL_GetTicks();
+    Uint32 lastTime = startTime;
+
     bool quit = false;
     while (!quit) {
         quit = !handleEvents(a, x_move, y_move, alpha);
         if (quit)
             break;
+
+        // Обновление счетчика кадров
+        frameCount++;
+
+        // Если прошло более одной секунды с момента последнего обновления, обновите заголовок окна
+        if (SDL_GetTicks() - lastTime > 1000) {
+            std::string title = "FPS: " + std::to_string(frameCount);
+            SDL_SetWindowTitle(gWindow, title.c_str());
+
+            // Сброс счетчика кадров
+            frameCount = 0;
+            lastTime = SDL_GetTicks();
+        }
+
         render(a, x_move, y_move, alpha);
     }
 

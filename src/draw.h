@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <cassert>
+#include <string>
 
 /**
  * @brief Initializes the SDL library.
