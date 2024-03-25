@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
     double alpha = 0;
     gTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
 
-    if (NULL == gTexture) {
+    if (nullptr == gTexture) {
         printf("Failed to load media!\n");
         close();
         return 1;

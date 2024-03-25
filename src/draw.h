@@ -26,7 +26,12 @@ void close();
  */
 int my_put_pixel(int x, int y, double alpha);
 
+void handleAlphaChange(float& x_move, float& y_move, double& alpha, int direction);
+
+void handleMove(float& move, int direction, float limit);
+
 bool handleEvents(float& a, float& x_move, float& y_move, double& alpha);
+
 void render(float a, float x_move, float y_move, double alpha);
 /**
  * @brief Draws an SDL surface on the screen with the specified transformations.

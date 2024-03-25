@@ -10,13 +10,52 @@
 #define RGB32(r, g, b) static_cast<uint32_t>((((static_cast<uint32_t>(r) << 8) | g) << 8) | b)
 
 /**
- * Handles SDL events and updates the values of the parameters.
+ * @brief Handles the change in alpha value and updates the position coordinates.
  *
- * @param a The value of 'a' to be updated.
- * @param x_move The value of 'x_move' to be updated.
- * @param y_move The value of 'y_move' to be updated.
- * @param alpha The value of 'alpha' to be updated.
- * @return Returns true if the event handling is successful, false if the user quits the application.
+ * This function takes in the current position coordinates (x_move and y_move), the alpha value,
+ * and the direction of change. It updates the alpha value by adding 5 times the direction,
+ * fills the loadedSurface with a white color, and clamps the position coordinates within certain limits.
+ *
+ * @param x_move The current x-coordinate of the position.
+ * @param y_move The current y-coordinate of the position.
+ * @param alpha The current alpha value.
+ * @param direction The direction of change (-1 for decrease, 1 for increase).
+ */
+void handleAlphaChange(float& x_move, float& y_move, double& alpha, int direction) {
+    alpha += 5 * direction;
+    SDL_FillRect(loadedSurface, nullptr, 0x00FFFFFF);
+    x_move = std::min(x_move, 170.0f);
+    x_move = std::max(x_move, -310.0f);
+    y_move = std::min(y_move, 230.0f);
+    y_move = std::max(y_move, -230.0f);
+}
+
+/**
+ * Handles the movement of an object.
+ *
+ * This function updates the position of an object based on the given direction and limit.
+ *
+ * @param move The current position of the object.
+ * @param direction The direction of movement. Positive values indicate forward movement, while negative values indicate backward movement.
+ * @param limit The maximum limit for the object's position.
+ */
+void handleMove(float& move, int direction, float limit) {
+    printf("Move key has been pressed\n");
+    if (direction > 0 && move + 10 < limit) {
+        move += 10;
+    } else if (direction < 0 && move - 10 > -limit) {
+        move -= 10;
+    }
+}
+
+/**
+ * Handles SDL events and updates the values of `a`, `x_move`, `y_move`, and `alpha` accordingly.
+ *
+ * @param a The reference to the `a` variable.
+ * @param x_move The reference to the `x_move` variable.
+ * @param y_move The reference to the `y_move` variable.
+ * @param alpha The reference to the `alpha` variable.
+ * @return `true` if the program should continue running, `false` if the program should exit.
  */
 bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
     SDL_Event e;
@@ -27,22 +66,10 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
         if (SDL_KEYDOWN == e.type) {
             switch (e.key.keysym.scancode) {
                 case SDL_SCANCODE_Q:
-                    alpha -= 5;
-                    SDL_FillRect(loadedSurface, NULL, 0x00FFFFFF);
-                    // Обновление границ перемещения после поворота
-                    x_move = std::min(x_move, 170.0f);
-                    x_move = std::max(x_move, -310.0f);
-                    y_move = std::min(y_move, 230.0f);
-                    y_move = std::max(y_move, -230.0f);
+                    handleAlphaChange(x_move, y_move, alpha, -1);
                     break;
                 case SDL_SCANCODE_E:
-                    alpha += 5;
-                    SDL_FillRect(loadedSurface, NULL, 0x00FFFFFF);
-                    // Обновление границ перемещения после поворота
-                    x_move = std::min(x_move, 170.0f);
-                    x_move = std::max(x_move, -310.0f);
-                    y_move = std::min(y_move, 230.0f);
-                    y_move = std::max(y_move, -230.0f);
+                    handleAlphaChange(x_move, y_move, alpha, 1);
                     break;
                 case SDL_SCANCODE_KP_PLUS:
                     printf("SDL_SCANCODE_KP_PLUS have been presssed\n");
@@ -53,28 +80,16 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
                     a -= 3;
                     break;
                 case SDL_SCANCODE_D:
-                    printf("SDL_SCANCODE_D have been pressed\n");
-                    if (x_move + 10 < 170) {
-                        x_move += 10;
-                    }
+                    handleMove(x_move, 1, 170);
                     break;
                 case SDL_SCANCODE_A:
-                    printf("SDL_SCANCODE_A have been pressed\n");
-                    if (x_move - 10 > -310) {
-                        x_move -= 10;
-                    }
+                    handleMove(x_move, -1, 310);
                     break;
                 case SDL_SCANCODE_W:
-                    printf("SDL_SCANCODE_W have been pressed\n");
-                    if (y_move - 10 > -230) {
-                        y_move -= 10;
-                    }
+                    handleMove(y_move, -1, 230);
                     break;
                 case SDL_SCANCODE_S:
-                    printf("SDL_SCANCODE_S have been pressed\n");
-                    if (y_move + 10 < 230) {
-                        y_move += 10;
-                    }
+                    handleMove(y_move, 1, 230);
                     break;
                 case SDL_SCANCODE_ESCAPE:
                     return false;
