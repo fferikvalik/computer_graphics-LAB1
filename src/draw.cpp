@@ -7,14 +7,12 @@
  * initializing and closing SDL, putting pixels on an SDL surface, clearing a surface, getting pixels from a surface,
  * rotating coordinates, drawing axes, and drawing a grid.
  */
+
 /**
  * @file draw.cpp
  * @brief Implementation file for drawing functions.
  */
 #include "draw.h"
-#include <iostream>
-#include <glm/glm.hpp>
-#include <glm/ext.hpp>
 
 #define RGB32(r, g, b) static_cast<uint32_t>((((static_cast<uint32_t>(r) << 8) | g) << 8) | b)
 
@@ -66,6 +64,10 @@ void handleMove(float& move, int direction, float limit) {
  * @param alpha The reference to the `alpha` variable.
  * @return `true` if the program should continue running, `false` if the program should exit.
  */
+// Глобальные переменные для хранения координат центра вращения
+float center_x = 0.0f;
+float center_y = 0.0f;
+
 bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
     SDL_Event e;
     while (SDL_PollEvent(&e) != 0) {
@@ -73,7 +75,10 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
             return false;
         }
         if (SDL_MOUSEBUTTONDOWN == e.type){
-            e.button.x;
+            if (e.button.button == SDL_BUTTON_LEFT) {
+                center_x = e.button.x;
+                center_y = e.button.y;
+            }
         }
         if (SDL_KEYDOWN == e.type) {
             switch (e.key.keysym.scancode) {
@@ -365,6 +370,8 @@ void draw_main_function(SDL_Surface *s, float a, float x_move, float y_move, dou
     y = rotate_y; // Update y-coordinate with rotated value
     x += x_move; // Translate x-coordinate by x_move
     y += y_move; // Translate y-coordinate by y_move
+    x += center_x - SCREEN_WIDTH / 2; // Translate x-coordinate to the new center
+    y += center_y - SCREEN_HEIGHT / 2; // Translate y-coordinate to the new center
     put_pixel32(s, x + SCREEN_WIDTH / 2, y + SCREEN_HEIGHT / 2, RGB32(255, 105, 108)); // Set pixel at (x + SCREEN_WIDTH/2, y + SCREEN_HEIGHT/2) to RGB(255, 105, 108)
   }
 }
@@ -389,6 +396,8 @@ void draw_invisible_circle(SDL_Surface *s, float a, float x_move, float y_move, 
     y = rotate_y; // Update y-coordinate with rotated value
     x += x_move; // Translate x-coordinate by x_move
     y += y_move; // Translate y-coordinate by y_move
+    x += center_x - SCREEN_WIDTH / 2; // Translate x-coordinate to the new center
+    y += center_y - SCREEN_HEIGHT / 2; // Translate y-coordinate to the new center
     put_pixel32(s, x + SCREEN_WIDTH / 2, y + SCREEN_HEIGHT / 2, RGB32(255,0, 255)); // Set pixel at (x + SCREEN_WIDTH/2, y + SCREEN_HEIGHT/2) to RGB(255, 0, 255)
   }
 }
@@ -405,57 +414,17 @@ void draw_invisible_circle(SDL_Surface *s, float a, float x_move, float y_move, 
 void draw_circle_points(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
   for (float i = 0; i < 2 * M_PI; i += 0.1) { // Loop through each angle from 0 to 2*pi
-    float x = 2.5 * cos(i) + a/2; // Calculate x-coordinate based on angle and parameter a
-    float y = 2.5 * sin(i) + a/2; // Calculate y-coordinate based on angle and parameter a
-    float rotate_x = x * cos(alpha) - y * sin(alpha); // Rotate x-coordinate using alpha
-    float rotate_y = x * sin(alpha) + y * cos(alpha); // Rotate y-coordinate using alpha
+    float x = a * cos(i) * (1 + cos(i)); // Calculate x-coordinate based on angle and parameter a
+    float y = a * sin(i) * (1 + cos(i)); // Calculate y-coordinate based on angle and parameter a
+    float rotate_x = x * cos(alpha) + y * sin(alpha); // Rotate x-coordinate using alpha
+    float rotate_y = -x * sin(alpha) + y * cos(alpha); // Rotate y-coordinate using alpha
     x = rotate_x; // Update x-coordinate with rotated value
     y = rotate_y; // Update y-coordinate with rotated value
     x += x_move; // Translate x-coordinate by x_move
-    y -= y_move; // Translate y-coordinate by y_move
-    put_pixel32(s, x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y, RGB32(0, 255, 0)); // Set pixel at (x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y) to RGB(0, 255, 0)
-  }
-}
-
-/**
- * Draws a cardioid shape on the given SDL surface.
- *
- * @param s The SDL surface to draw on.
- * @param a The parameter value for the cardioid shape.
- * @param x_move The amount to move the shape horizontally.
- * @param y_move The amount to move the shape vertically.
- * @param alpha The angle in radians to rotate the shape.
- */
-void draw_function_points(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
-{
-  for (float i = 0; i < 2 * M_PI; i += 0.1) { // Loop through each angle from 0 to 2*pi
-    float x = 2.5 * cos(i) + (3*a)/4; // Calculate x-coordinate based on angle and parameter a
-    float y = 2.5 * sin(i) + sqrt(3)*(3*a)/4; // Calculate y-coordinate based on angle and parameter a
-
-    // Rotate the cardioid
-    float rotate_x = x * cos(alpha) - y * sin(alpha); // Rotate x-coordinate using alpha
-    float rotate_y = x * sin(alpha) + y * cos(alpha); // Rotate y-coordinate using alpha
-
-    // Translate the cardioid after rotating
-    x = rotate_x + x_move;
-    y = rotate_y - y_move;
-
-    put_pixel32(s, x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y, RGB32(0, 255, 0)); // Set pixel at (x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y) to RGB(0, 255, 0)
-  }
-
-  for (float i = 0; i < 2 * M_PI; i += 0.1) { // Loop through each angle from 0 to 2*pi
-    float x = 2.5 * cos(i) + (3*a)/4; // Calculate x-coordinate based on angle and parameter a
-    float y = 2.5 * sin(i) + sqrt(3)*(-1)*(3*a)/4; // Calculate y-coordinate based on angle and parameter a
-
-    // Rotate the cardioid
-    float rotate_x = x * cos(alpha) - y * sin(alpha); // Rotate x-coordinate using alpha
-    float rotate_y = x * sin(alpha) + y * cos(alpha); // Rotate y-coordinate using alpha
-
-    // Translate the cardioid after rotating
-    x = rotate_x + x_move;
-    y = rotate_y - y_move;
-
-    put_pixel32(s, x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y, RGB32(0, 255, 0)); // Set pixel at (x + SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - y) to RGB(0, 255, 0)
+    y += y_move; // Translate y-coordinate by y_move
+    x += center_x - SCREEN_WIDTH / 2; // Translate x-coordinate to the new center
+    y += center_y - SCREEN_HEIGHT / 2; // Translate y-coordinate to the new center
+    put_pixel32(s, x + SCREEN_WIDTH/2, y + SCREEN_HEIGHT/2, RGB32(0, 255, 0)); // Set pixel at (x + SCREEN_WIDTH/2, y + SCREEN_HEIGHT/2) to RGB(0, 255, 0)
   }
 }
 
@@ -480,5 +449,4 @@ void draw(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
   draw_grid(s, 20);
   draw_invisible_circle(s, a, x_move, y_move, alpha);
   draw_circle_points(s, a, x_move, y_move, alpha);
-  draw_function_points(s, a, x_move, y_move, alpha);
 }

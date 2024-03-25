@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <cassert>
 #include <string>
+#include <iostream>
+#include <glm/glm.hpp>
+#include <glm/ext.hpp>
+
+
 
 /**
  * @brief Initializes the SDL library.
@@ -121,6 +126,7 @@ void draw(SDL_Surface *s, float a, float x_move, float y_move, double alpha);
  * @return 0 if successful, -1 if an error occurred.
  */
 int my_put_pixel(int x, int y, double alpha);
+
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
