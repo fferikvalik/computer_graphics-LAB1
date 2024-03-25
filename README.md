@@ -1,4 +1,4 @@
-![GitHub last commit](https://img.shields.io/github.com/fferikvalik/computer_graphics-LAB1?color=yellow)
+
 # SDL Rendering Project
 
 This project is about rendering game objects on the screen using SDL. The main files involved in this project are `main.cpp`, `draw.h`, and `draw.cpp`.
