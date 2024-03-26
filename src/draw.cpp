@@ -359,9 +359,12 @@ void draw_grid(SDL_Surface *s, int step)
  * @param y_move The amount to translate the shape along the y-axis.
  * @param alpha The angle (in radians) used to rotate the shape.
  */
-void draw_main_function(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
+void draw_main_function_recursive(SDL_Surface *s, float a, float x_move, float y_move, double alpha, float t = 0.0f)
 {
-  for (float t = 0; t < 2 * M_PI; t += 0.001) { // Loop through each angle from 0 to 2*pi
+    if (t >= 2 * M_PI) {
+        return;
+    }
+
     float x = a * cos(t) * (1 + cos(t)); // Calculate x-coordinate based on angle and parameter a
     float y = a * sin(t) * (1 + cos(t)); // Calculate y-coordinate based on angle and parameter a
     float rotate_x = x * cos(alpha) + y * sin(alpha); // Rotate x-coordinate using alpha
@@ -373,7 +376,8 @@ void draw_main_function(SDL_Surface *s, float a, float x_move, float y_move, dou
     x += center_x - SCREEN_WIDTH / 2; // Translate x-coordinate to the new center
     y += center_y - SCREEN_HEIGHT / 2; // Translate y-coordinate to the new center
     put_pixel32(s, x + SCREEN_WIDTH / 2, y + SCREEN_HEIGHT / 2, RGB32(255, 105, 108)); // Set pixel at (x + SCREEN_WIDTH/2, y + SCREEN_HEIGHT/2) to RGB(255, 105, 108)
-  }
+
+    draw_main_function_recursive(s, a, x_move, y_move, alpha, t + 0.001f);
 }
 
 /**
@@ -385,21 +389,25 @@ void draw_main_function(SDL_Surface *s, float a, float x_move, float y_move, dou
  * @param y_move The amount to move the circle along the y-axis.
  * @param alpha The angle in radians to rotate the circle.
  */
-void draw_invisible_circle(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
+void draw_invisible_circle_recursive(SDL_Surface *s, float a, float x_move, float y_move, double alpha, float g = 0.0f)
 {
-  for (float g = 0; g < 2 * M_PI; g += 0.1) { // Loop through each angle from 0 to 2*pi
-    float x = (a / 2) * cos(g) + a/2; // Calculate x-coordinate based on angle and parameter a
-    float y = (a / 2) * sin(g); // Calculate y-coordinate based on angle and parameter a
-    float rotate_x = x * cos(alpha) + y * sin(alpha); // Rotate x-coordinate using alpha
-    float rotate_y = -x * sin(alpha) + y * cos(alpha); // Rotate y-coordinate using alpha
-    x = rotate_x; // Update x-coordinate with rotated value
-    y = rotate_y; // Update y-coordinate with rotated value
-    x += x_move; // Translate x-coordinate by x_move
-    y += y_move; // Translate y-coordinate by y_move
-    x += center_x - SCREEN_WIDTH / 2; // Translate x-coordinate to the new center
-    y += center_y - SCREEN_HEIGHT / 2; // Translate y-coordinate to the new center
-    put_pixel32(s, x + SCREEN_WIDTH / 2, y + SCREEN_HEIGHT / 2, RGB32(255,0, 255)); // Set pixel at (x + SCREEN_WIDTH/2, y + SCREEN_HEIGHT/2) to RGB(255, 0, 255)
-  }
+    if (g >= 2 * M_PI) {
+        return;
+    }
+
+    float x = (a / 2) * cos(g) + a/2;
+    float y = (a / 2) * sin(g);
+    float rotate_x = x * cos(alpha) + y * sin(alpha);
+    float rotate_y = -x * sin(alpha) + y * cos(alpha);
+    x = rotate_x;
+    y = rotate_y;
+    x += x_move;
+    y += y_move;
+    x += center_x - SCREEN_WIDTH / 2;
+    y += center_y - SCREEN_HEIGHT / 2;
+    put_pixel32(s, x + SCREEN_WIDTH / 2, y + SCREEN_HEIGHT / 2, RGB32(255,0, 255));
+
+    draw_invisible_circle_recursive(s, a, x_move, y_move, alpha, g + 0.1f);
 }
 
 /**
@@ -411,9 +419,12 @@ void draw_invisible_circle(SDL_Surface *s, float a, float x_move, float y_move, 
  * @param y_move The amount to translate the circle along the y-axis.
  * @param alpha The angle (in radians) to rotate the circle.
  */
-void draw_circle_points(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
+void draw_circle_points_recursive(SDL_Surface *s, float a, float x_move, float y_move, double alpha, float i = 0.0f)
 {
-  for (float i = 0; i < 2 * M_PI; i += 0.1) { // Loop through each angle from 0 to 2*pi
+    if (i >= 2 * M_PI) {
+        return;
+    }
+
     float x = a * cos(i) * (1 + cos(i)); // Calculate x-coordinate based on angle and parameter a
     float y = a * sin(i) * (1 + cos(i)); // Calculate y-coordinate based on angle and parameter a
     float rotate_x = x * cos(alpha) + y * sin(alpha); // Rotate x-coordinate using alpha
@@ -425,7 +436,8 @@ void draw_circle_points(SDL_Surface *s, float a, float x_move, float y_move, dou
     x += center_x - SCREEN_WIDTH / 2; // Translate x-coordinate to the new center
     y += center_y - SCREEN_HEIGHT / 2; // Translate y-coordinate to the new center
     put_pixel32(s, x + SCREEN_WIDTH/2, y + SCREEN_HEIGHT/2, RGB32(0, 255, 0)); // Set pixel at (x + SCREEN_WIDTH/2, y + SCREEN_HEIGHT/2) to RGB(0, 255, 0)
-  }
+
+    draw_circle_points_recursive(s, a, x_move, y_move, alpha, i + 0.1f);
 }
 
 /**
@@ -445,8 +457,8 @@ void draw(SDL_Surface *s, float a, float x_move, float y_move, double alpha)
 {
   clear_surface(s); // Clear the surface by setting all pixels to black
   draw_axes(s);
-  draw_main_function(s, a, x_move, y_move, alpha);
+  draw_main_function_recursive(s, a, x_move, y_move, alpha, 0.0f);
   draw_grid(s, 20);
-  draw_invisible_circle(s, a, x_move, y_move, alpha);
-  draw_circle_points(s, a, x_move, y_move, alpha);
+  draw_invisible_circle_recursive(s, a, x_move, y_move, alpha, 0.0f);
+  draw_circle_points_recursive(s, a, x_move, y_move, alpha, 0.0f);
 }
