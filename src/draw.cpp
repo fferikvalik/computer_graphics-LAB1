@@ -130,14 +130,14 @@ bool handleEvents(float& a, float& x_move, float& y_move, double& alpha) {
 void render(float a, float x_move, float y_move, double alpha) {
     SDL_RenderClear(gRenderer);
     draw(loadedSurface, a, x_move, y_move, alpha * 3.14 / 180);
-    SDL_UpdateTexture(gTexture, NULL, loadedSurface->pixels, loadedSurface->pitch);
-    SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);
+    SDL_UpdateTexture(gTexture, nullptr, loadedSurface->pixels, loadedSurface->pitch);
+    SDL_RenderCopy(gRenderer, gTexture, nullptr, nullptr);
     SDL_RenderPresent(gRenderer);
 }
 
-    SDL_Window *gWindow = NULL;
-    SDL_Renderer *gRenderer = NULL;
-    SDL_Texture *gTexture = NULL;
+    SDL_Window *gWindow = nullptr;
+    SDL_Renderer *gRenderer = nullptr;
+    SDL_Texture *gTexture = nullptr;
     /**
      * @brief Represents a 2D image surface that can be used for rendering in SDL.
      *
@@ -149,7 +149,7 @@ void render(float a, float x_move, float y_move, double alpha) {
      * @note This structure is an opaque data type, meaning that its internal implementation is hidden from the user.
      *       Users should only interact with `SDL_Surface` pointers and use the provided functions to manipulate them.
      */
-    SDL_Surface *loadedSurface = NULL;
+    SDL_Surface *loadedSurface = nullptr;
 
 /**
  * Initializes the SDL library and creates a window and renderer.
@@ -164,12 +164,12 @@ bool init()
     success = false;
   } else {
     gWindow = SDL_CreateWindow("AOKG Lab 1", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (gWindow == NULL) {
+    if (gWindow == nullptr) {
       printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
       success = false;
     } else {
       gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_SOFTWARE);
-      if (gRenderer == NULL) {
+      if (gRenderer == nullptr) {
         printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
         success = false;
       } else {
@@ -184,16 +184,16 @@ bool init()
  * @brief Closes the SDL window and cleans up resources.
  *
  * This function destroys the SDL texture, renderer, and window, and then quits the SDL subsystem.
- * After calling this function, the texture, renderer, and window pointers are set to NULL.
+ * After calling this function, the texture, renderer, and window pointers are set to nullptr.
  */
 void close()
 {
   SDL_DestroyTexture(gTexture);
-  gTexture = NULL;
+  gTexture = nullptr;
   SDL_DestroyRenderer(gRenderer);
   SDL_DestroyWindow(gWindow);
-  gWindow = NULL;
-  gRenderer = NULL;
+  gWindow = nullptr;
+  gRenderer = nullptr;
   SDL_Quit();
 }
 
@@ -207,7 +207,7 @@ void close()
  */
 void put_pixel32(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
-  assert(NULL != surface); // Check if surface is not NULL
+  assert(nullptr != surface); // Check if surface is not nullptr
   if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT) {
     Uint32 *pixels = (Uint32 *)surface->pixels;
     pixels[(y * surface->w) + x] = pixel;
@@ -233,7 +233,7 @@ void clear_surface(SDL_Surface * s) {
  */
 Uint32 get_pixel32(SDL_Surface *surface, int x, int y)
 {
-  assert(NULL != surface); // Check if surface is not NULL
+  assert(nullptr != surface); // Check if surface is not nullptr
   assert(x < SCREEN_WIDTH); // Check if x is within the screen width
   assert(y < SCREEN_HEIGHT); // Check if y is within the screen height
 
