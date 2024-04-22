@@ -31,8 +31,8 @@
 void handleAlphaChange(float& x_move, float& y_move, double& alpha, int direction) {
     alpha += 5 * direction;
     SDL_FillRect(loadedSurface, nullptr, 0x00FFFFFF);
-    x_move = std::min(x_move, 170.0f);
-    x_move = std::max(x_move, -310.0f);
+    x_move = std::min(x_move, 230.0f);
+    x_move = std::max(x_move, -230.0f);
     y_move = std::min(y_move, 230.0f);
     y_move = std::max(y_move, -230.0f);
 }
